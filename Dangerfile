@@ -80,7 +80,7 @@ class DependentsTester
     @dependents.each do |dependent|
       repo = dependent['repo']
       build = dependent['build']
-    
+
       downstream = Project.load(git_fetch_or_update(repo))
       downstream.upgrade_to(project)
       if !downstream.execute(build)
@@ -100,17 +100,17 @@ class DependentsTester
       git_reset(downstream.directory)
     end
   end
- 
+
   private
 
   def git_fetch_or_update(git_url)
     directory = "#{@workdir}/#{git_url.gsub(%r{[:\/.]}, '__')}"
-  
+
     if !Dir.exist?(directory)
       system("git clone --depth 1 '#{git_url}' '#{directory}'") or exit
     end
     git_reset(directory)
-  
+
     directory
   end
 
@@ -120,7 +120,7 @@ class DependentsTester
     system("#{git} clean -fdX") or exit
     system("#{git} checkout -- .") or exit
     system("#{git} submodule update --depth 1 --init --recursive") or exit
-  
+
     foreach_submodule = "#{git} submodule foreach --recursive"
     system("#{foreach_submodule} 'git clean -fdx'") or exit
     system("#{foreach_submodule} 'git clean -fdX'") or exit

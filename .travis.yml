@@ -6,17 +6,13 @@ matrix:
       # SonarQube analysis.
       script:
         - ./mvnw install sonar:sonar
-        #- ./build-dependents.sh "${HOME}/.dependants"
         - bundle exec danger
-        - find . -name "*.sh" -print0 | xargs -0 shellcheck
+        - bundle exec rbprettier --check Dangerfile Gemfile
     - jdk: openjdk11
       script:
-        - ./mvnw install sonar:sonar
-        #- ./build-dependents.sh "${HOME}/.dependants"
+        - ./mvnw install
+        - bundle exec danger
 addons:
-  apt:
-    packages:
-      - xmlstarlet
   bundler: true
   sonarcloud:
     organization: picnic-technologies
@@ -32,8 +28,8 @@ before_cache:
   - find "${HOME}/.m2/repository" -depth -name '*-SNAPSHOT' -exec rm -r '{}' \;
 cache:
   directories:
-    # The directory in which `build-dependents.sh` clones and builds projects
-    # that depend on this project.
+    # The directory in which we clone and build projects that depend on this
+    # project, to see whether breaking changes were introduced.
     - ${HOME}/.dependants
     # The local Maven repository in which third party dependencies are stored.
     - ${HOME}/.m2/repository

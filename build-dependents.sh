@@ -71,7 +71,7 @@ for git_url in $dependants; do
   if [ -e "${git_dir}" ]; then
     clean_project "${git_dir}"
     git -C "${git_dir}" pull --rebase
-  else 
+  else
     git clone --depth 1 "${git_url}" "${git_dir}"
   fi
   git -C "${git_dir}" submodule update --depth 1 --init
