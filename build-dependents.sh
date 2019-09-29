@@ -75,6 +75,7 @@ for git_url in $dependants; do
   else 
     git -C "${base_dir}" clone --depth 1 "${git_url}"
   fi
+  git submodule update --depth 1 --init
 
   # Run the build.
   build_project_with_parent_version "${git_dir}" "${parent_version}"
