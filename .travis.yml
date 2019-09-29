@@ -4,21 +4,26 @@ matrix:
     - jdk: openjdk8
       # This is the primary target platform. In this build we perform a
       # SonarQube analysis.
-      # XXX: Shouldn't we do the dependents checks on JDK 11 as well?
       script:
         - ./mvnw install sonar:sonar
+        #- ./build-dependents.sh "${HOME}/.dependants"
+        - bundle exec danger
         - find . -name "*.sh" -print0 | xargs -0 shellcheck
-        - ./build-dependents.sh "${HOME}/.dependants"
     - jdk: openjdk11
-      script: ./mvnw install
+      script:
+        - ./mvnw install sonar:sonar
+        #- ./build-dependents.sh "${HOME}/.dependants"
 addons:
   apt:
     packages:
       - xmlstarlet
+  bundler: true
   sonarcloud:
     organization: picnic-technologies
     token: "${SONARCLOUD_TOKEN}"
-install: mvn io.takari:maven:wrapper
+install:
+  - mvn io.takari:maven:wrapper
+  - bundle install
 before_cache:
   # Don't cache the artifacts we just generated, for multiple reasons: (1) we
   # shouldn't need them next time around and (2) if we do, that indicates a

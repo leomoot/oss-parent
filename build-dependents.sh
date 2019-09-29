@@ -18,6 +18,7 @@ set -e -u -o pipefail
 #   same way.
 # - The script assumes that the Takari Maven Wrapper (`./mvnw`) has been
 #   installed in the current working directory.
+# - The script does not clean up submodules.
 #
 
 base_dir="${1:?Directory in which to clone dependents not specified}"
