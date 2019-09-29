@@ -1,12 +1,19 @@
-language: java
 matrix:
   include:
-    - jdk: openjdk8
-      # This is the primary target platform. In this build perform a SonarQube
-      # analysis.
+    - language: java
+      jdk: openjdk8
+      # This is the primary target platform. In this build we perform a
+      # SonarQube analysis.
       script: ./mvnw install sonar:sonar
-    - jdk: openjdk11
+    - language: java
+      jdk: openjdk11
       script: ./mvnw install
+    - language: minimal
+      script:
+        - find . -name "*.sh" -print0 | xargs -0 shellcheck
+        - ./build-dependents.sh "${HOME}/.dependants"
+  allow_failures:
+    - language: minimal
 addons:
   sonarcloud:
     organization: picnic-technologies
@@ -20,6 +27,9 @@ before_cache:
   - find "${HOME}/.m2/repository" -depth -name '*-SNAPSHOT' -exec rm -r '{}' \;
 cache:
   directories:
+    # The directory in which `build-dependents.sh` clones and builds projects
+    # that depend on this project.
+    - ${HOME}/.dependants
     # The local Maven repository in which third party dependencies are stored.
     - ${HOME}/.m2/repository
     # The Takari Maven Wrapper's storage for downloaded Maven distributions.
