@@ -1,3 +1,16 @@
+#
+# A Danger script which checks out dependent projects and builds them against the
+# current (installed) version of this project.
+#
+# XXX: This script can be improved further. Open points:
+# - The script assumes that the parent project resides in the current directory
+#   and has already been installed into the local Maven repository.
+# - The script assumes this project and all downstream dependencies are Maven
+#   projects. Think of ways to generalize this.
+# - The code should be moved out of this file and molded into a proper Danger
+#   plugin.
+#
+
 require 'nokogiri'
 require 'yaml'
 
