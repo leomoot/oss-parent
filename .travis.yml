@@ -1,19 +1,16 @@
+language: java
 matrix:
   include:
-    - language: java
-      jdk: openjdk8
+    - jdk: openjdk8
       # This is the primary target platform. In this build we perform a
       # SonarQube analysis.
-      script: ./mvnw install sonar:sonar
-    - language: java
-      jdk: openjdk11
-      script: ./mvnw install
-    - language: minimal
+      # XXX: Shouldn't we do the dependents checks on JDK 11 as well?
       script:
+        - ./mvnw install sonar:sonar
         - find . -name "*.sh" -print0 | xargs -0 shellcheck
         - ./build-dependents.sh "${HOME}/.dependants"
-  allow_failures:
-    - language: minimal
+    - jdk: openjdk11
+      script: ./mvnw install
 addons:
   sonarcloud:
     organization: picnic-technologies
