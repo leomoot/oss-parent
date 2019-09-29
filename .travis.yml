@@ -12,6 +12,9 @@ matrix:
     - jdk: openjdk11
       script: ./mvnw install
 addons:
+  apt:
+    packages:
+      - xmlstarlet
   sonarcloud:
     organization: picnic-technologies
     token: "${SONARCLOUD_TOKEN}"
