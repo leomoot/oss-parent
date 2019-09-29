@@ -6,12 +6,14 @@ matrix:
       # SonarQube analysis.
       script:
         - ./mvnw install sonar:sonar
-        - bundle exec danger
+        #- bundle exec danger
+        - bundle exec danger dry_run
         - bundle exec rbprettier --check Dangerfile Gemfile
     - jdk: openjdk11
       script:
         - ./mvnw install
-        - bundle exec danger
+        #- bundle exec danger
+        - bundle exec danger dry_run
 addons:
   bundler: true
   sonarcloud:

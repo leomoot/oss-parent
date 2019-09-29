@@ -1,4 +1,5 @@
-#
+# frozen_string_literal: true
+
 # A Danger script which checks out dependent projects and builds them against the
 # current (installed) version of this project.
 #
@@ -9,7 +10,6 @@
 #   projects. Think of ways to generalize this.
 # - The code should be moved out of this file and molded into a proper Danger
 #   plugin.
-#
 
 require 'nokogiri'
 require 'yaml'
