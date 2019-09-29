@@ -19,8 +19,8 @@ set -e -u -o pipefail
 base_dir="${1:?Directory in which to clone dependents not specified}"
 
 dependants='
-  git@github.com:PicnicSupermarket/jolo.git
-  git@github.com:PicnicSupermarket/reactive-support.git
+  https://github.com/PicnicSupermarket/jolo.git
+  https://github.com/PicnicSupermarket/reactive-support.git
 '
 
 # Reverts the Git repository located in the given directory to an "as new"
