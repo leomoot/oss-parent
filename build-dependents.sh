@@ -14,6 +14,10 @@ set -e -u -o pipefail
 #   and has already been installed into the local Maven repository.
 # - The list of dependent projects is hardcoded.
 # - The script assumes that each dependent project has a unique name.
+# - The script assumes that each dependent project can be build in exactly the
+#   same way.
+# - The script assumes that the Takari Maven Wrapper (`./mvnw`) has been
+#   installed in the current working directory.
 #
 
 base_dir="${1:?Directory in which to clone dependents not specified}"
@@ -49,7 +53,7 @@ build_project_with_parent_version() {
   echo "Will build '${git_dir}' with the following modifications:"
   git -C "${project_dir}" diff
 
-  mvn -f "${project_dir}/pom.xml" clean install
+  ./mvnw -f "${project_dir}/pom.xml" clean install
 }
 
 # Determine the current parent version.
