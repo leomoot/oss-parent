@@ -1,0 +1,7 @@
+#working_directory: .dependants
+working_directory: /tmp/test
+dependents:
+  - repo: https://github.com/PicnicSupermarket/jolo.git
+    build: mvn -B -e io.takari:maven:wrapper && ./mvnw -B -e clean install
+  - repo: https://github.com/PicnicSupermarket/reactive-support.git
+    build: mvn -B -e io.takari:maven:wrapper && ./mvnw -B -e clean install

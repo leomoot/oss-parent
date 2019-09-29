@@ -13,7 +13,6 @@ set -e -u -o pipefail
 # - The script assumes that the parent project resides in the current directory
 #   and has already been installed into the local Maven repository.
 # - The list of dependent projects is hardcoded.
-# - The script assumes that each dependent project has a unique name.
 # - The script assumes that each dependent project can be build in exactly the
 #   same way.
 # - The script assumes that the Takari Maven Wrapper (`./mvnw`) has been
@@ -66,17 +65,16 @@ parent_version="$(
 # Build the latest version of each dependent project against the current parent
 # version.
 for git_url in $dependants; do
-  last_path_segment="${git_url##*/}"
-  git_dir="${base_dir}/${last_path_segment%%.git}"
+  git_dir="${base_dir}/$(echo "${git_url}" | sed 's,[:/.],__,g')"
 
   # Update the project if it has been cached prior; clone it otherwise.
   if [ -e "${git_dir}" ]; then
     clean_project "${git_dir}"
     git -C "${git_dir}" pull --rebase
   else 
-    git -C "${base_dir}" clone --depth 1 "${git_url}"
+    git clone --depth 1 "${git_url}" "${git_dir}"
   fi
-  git submodule update --depth 1 --init
+  git -C "${git_dir}" submodule update --depth 1 --init
 
   # Run the build.
   build_project_with_parent_version "${git_dir}" "${parent_version}"
