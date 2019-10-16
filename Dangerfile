@@ -144,3 +144,5 @@ end
 this_project = Project.load('.')
 tester = DependentsTester.load_config('dependents.yml')
 tester.try_upgrades_to(this_project)
+
+warn 'This is a test warning'
